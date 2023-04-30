@@ -17,7 +17,7 @@ const initialState = {
 	numOfCakes: 10,
 };
 
-// Way-1 Not Good
+//! Way-1 Not Good
 // const reducer = (state = initialState, action) => {
 // 	switch (action.type) {
 // 		case 'BUY_CAKE':
@@ -29,7 +29,7 @@ const initialState = {
 // 	}
 // };
 
-// Way-2 Good
+//? Way-2 Good
 // the state object might contain more than one property so, it is always safer to first create copy of state object and then change only properties that need to.
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -66,3 +66,5 @@ store.dispatch(buyCake());
 // store.dispatch(buyCake());
 // store.dispatch(buyCake());
 // unsubscribe();
+
+//? Redux pattern :- you create a store, declare the initial state and reducer, define your action and actions creators, subscribe to the store, dispatch action to update the store and finally un-subscribe to the changes.
