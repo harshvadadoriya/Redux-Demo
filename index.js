@@ -20,8 +20,18 @@ function buyIcecream() {
 //? Reducer
 // (previousState,action) => newState
 
-const initialState = {
+// Single Reducer
+// const initialState = {
+// 	numOfCakes: 10,
+// 	numOfIceCream: 15,
+// };
+
+// Multiple Reducers
+const initialCakeState = {
 	numOfCakes: 10,
+};
+
+const initialIcecreamState = {
 	numOfIceCream: 15,
 };
 
@@ -39,14 +49,41 @@ const initialState = {
 
 //? Way-2 Good
 // the state object might contain more than one property so, it is always safer to first create copy of state object and then change only properties that need to.
-const reducer = (state = initialState, action) => {
+
+// Single Reducer
+// const reducer = (state = initialState, action) => {
+// 	switch (action.type) {
+// 		case 'BUY_CAKE':
+// 			return {
+// 				// use spread operator to make copy of state object. we are basically asking reducer to first make copy of state object and then only update the number of Cakes and if there were other properties in state, they would remain unchanged.
+// 				...state,
+// 				numOfCakes: state.numOfCakes - 1,
+// 			};
+// 		case 'BUY_ICECREAM':
+// 			return {
+// 				...state,
+// 				numOfIceCream: state.numOfIceCream - 1,
+// 			};
+// 		default:
+// 			return state;
+// 	}
+// };
+
+// Multiple Reducers
+const cakeReducer = (state = initialCakeState, action) => {
 	switch (action.type) {
 		case 'BUY_CAKE':
 			return {
-				// use spread operator to make copy of state object. we are basically asking reducer to first make copy of state object and then only update the number of Cakes and if there were other properties in state, they would remain unchanged.
 				...state,
 				numOfCakes: state.numOfCakes - 1,
 			};
+		default:
+			return state;
+	}
+};
+
+const iceCreamReducer = (state = initialIcecreamState, action) => {
+	switch (action.type) {
 		case 'BUY_ICECREAM':
 			return {
 				...state,
@@ -60,9 +97,16 @@ const reducer = (state = initialState, action) => {
 //? Store
 const redux = require('redux');
 const createStore = redux.legacy_createStore;
+const combineReducers = redux.combineReducers;
+
+const rootReducer = combineReducers({
+	cake: cakeReducer,
+	iceCream: iceCreamReducer,
+});
 
 //? store holds application state
-const store = createStore(reducer);
+// const store = createStore(reducer);
+const store = createStore(rootReducer);
 //? allows access to state via getState()
 console.log('Initial State', store.getState());
 //? registers listeners via subscribe(listener)
@@ -83,3 +127,9 @@ store.dispatch(buyIcecream());
 unsubscribe();
 
 //? Redux pattern :- you create a store, declare the initial state and reducer, define your action and actions creators, subscribe to the store, dispatch action to update the store and finally un-subscribe to the changes.
+
+//? Multiple Reducer
+// split state and reducer
+
+//? Combine Reducers
+// Redux provides a method called combine reducers to combine multiple reducers into single reducer which can be passed to createStore method.
