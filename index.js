@@ -36,6 +36,7 @@ const reducer = (state = initialState, action) => {
 		case 'BUY_CAKE':
 			return {
 				// use spread operator to make copy of state object. we are basically asking reducer to first make copy of state object and then only update the number of Cakes and if there were other properties in state, they would remain unchanged.
+				...state,
 				numOfCakes: state.numOfCakes - 1,
 			};
 		default:
